@@ -26,14 +26,19 @@ namespace ToDoList
       public void Configure(IApplicationBuilder app)
     {
       app.UseDeveloperExceptionPage();
-      
+      app.UseStaticFiles(); 
       app.UseMvc(routes =>
       {
         routes.MapRoute(
           name: "default",
           template: "{controller=Home}/{action=Index}/{id?}");
       });
-
+      
     }
   }
+  public static class DBConfiguration
+  {
+    public static string ConnectionString = "server=localhost;user id=root;password=epicodus;port=3306;database=to_do_list;";
+  }
+
 }
