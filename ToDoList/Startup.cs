@@ -18,7 +18,7 @@ namespace ToDoList
       Configuration = builder.Build();
     }
 
-    public IConfigurationRoot Configuration { get; set;}
+    public IConfigurationRoot Configuration { get; set; }
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddMvc();
