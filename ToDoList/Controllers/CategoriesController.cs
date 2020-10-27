@@ -1,79 +1,78 @@
-// using Microsoft.AspNetCore.Mvc;
-// using System.Collections.Generic;
-// using System;
-// using System.Linq;
-// using Microsoft.EntityFrameworkCore;
-// using ToDoList.Models;
-// using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using ToDoList.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-// namespace ToDoList.Controllers
-// {
-//   public class CategoriesController : Controller
-//   {
-//     ToDoListContext _db;
+namespace ToDoList.Controllers
+{
+  public class CategoriesController : Controller
+  {
+    ToDoListContext _db;
 
-//     public CategoriesController(ToDoListContext db)
-//     {
-//       _db = db;
-//     }
+    public CategoriesController(ToDoListContext db)
+    {
+      _db = db;
+    }
 
-//     public ActionResult Index()
-//     {
-//       List<Category> categories = _db.Categories.ToList();
-//       return View(categories);
-//     }
+    public ActionResult Index()
+    {
+      List<Category> categories = _db.Categories.ToList();
+      return View(categories);
+    }
 
+    public ActionResult Create()
+    {
+      return View("Create");
+    }
 
-//     public ActionResult Create()
-//     {
-//       return View("Create");
-//     }
+    [HttpPost]
+    public ActionResult Create(string Name)
+    {
+      Category newCategory = new Category() { Name = Name };
+      _db.Categories.Add(newCategory);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
 
-//     [HttpPost]
-//     public ActionResult Create(string Name)
-//     {
-//       Category newCategory = new Category() { Name = Name };
-//       _db.Categories.Add(newCategory);
-//       _db.SaveChanges();
-//       return RedirectToAction("Index");
-//     }
+    public ActionResult Edit(int id)
+    {
+      Category thisCategory = _db.Categories.FirstOrDefault(category => category.CategoryId == id);
+      return View(thisCategory);
+    }
 
-//     public ActionResult Edit(int id)
-//     {
-//       Category thisCategory = _db.Categories.FirstOrDefault(category => category.CategoryId == id);
-//       return View(thisCategory);
-//     }
+    [HttpPost]
+    public ActionResult Edit(Category category)
+    {
+      _db.Entry(category).State = EntityState.Modified;
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
 
-//     [HttpPost]
-//     public ActionResult Edit(Category category)
-//     {
-//       _db.Entry(category).State = EntityState.Modified;
-//       _db.SaveChanges();
-//       return RedirectToAction("Index");
-//     }
+    public ActionResult Details(int id)
+    {
+      Category thisCategory = _db.Categories.Include(Category => Category.Items).ThenInclude(join => join.Item).FirstOrDefault(category => category.CategoryId == id);
+      return View(thisCategory);
+    }
 
-//     public ActionResult Details(int id)
-//     {
-//       Category thisCategory = _db.Categories.FirstOrDefault(category => category.CategoryId == id);
-//       return View(thisCategory);
-//     }
-//     //change to categories
-//     public ActionResult Delete(int id)
-//     {
-//       Category thisCategory = _db.Categories.FirstOrDefault(category => category.CategoryId == id);
-//       return View(thisCategory);
-//     }
+    public ActionResult Delete(int id)
+    {
+      Category thisCategory = _db.Categories.FirstOrDefault(category => category.CategoryId == id);
+      return View(thisCategory);
+    }
 
-//     [HttpPost, ActionName("Delete")]
-//     public ActionResult DeleteConfirmed(int id)
-//     {
-//       Category thisCategory = _db.Categories.FirstOrDefault(category => category.CategoryId == id);
-//       _db.Categories.Remove(thisCategory);
-//       _db.SaveChanges();
-//       return RedirectToAction("Index");
-//     }
-//   }
-// }
+    [HttpPost, ActionName("Delete")]
+    public ActionResult DeleteConfirmed(int id)
+    {
+      Category thisCategory = _db.Categories.FirstOrDefault(category => category.CategoryId == id);
+      _db.Categories.Remove(thisCategory);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+  }
+}
 
 
 
