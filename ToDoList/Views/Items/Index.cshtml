@@ -19,3 +19,6 @@
 
 <p>@Html.ActionLink("Add new item", "Create")</p>
 <p>@Html.ActionLink("Home", "Index", "Home")</p>
+
+<p>@Html.ActionLink("See list ordered by date", "Index", new {order = true})</p>
+<p>@Html.ActionLink("See unordered list", "Index", new {order = false})</p>

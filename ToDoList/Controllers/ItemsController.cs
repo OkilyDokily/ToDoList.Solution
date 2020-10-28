@@ -17,9 +17,17 @@ namespace ToDoList.Controllers
       _db = db;
     }
 
-    public ActionResult Index()
+    public ActionResult Index(bool order)
     {
-      return View(_db.Items.ToList());
+      if(order)
+      {
+        return View(_db.Items.OrderBy(x => x.DueDate).ToList());
+      }
+      else
+      {
+        return View(_db.Items.ToList());
+      }
+      
     }
 
     public ActionResult Create()
@@ -85,12 +93,20 @@ namespace ToDoList.Controllers
     }
 
     [HttpPost]
-    public ActionResult Completed(int id, bool completed)
+    public ActionResult Completed(int ItemId, bool completed)
     {
-      Console.WriteLine(id);
-      Console.WriteLine(completed);
-      Item item = _db.Items.FirstOrDefault(i => i.ItemId == id);
+      Item item = _db.Items.FirstOrDefault(i => i.ItemId == ItemId);
       item.Completed = completed;
+      _db.Entry(item).State = EntityState.Modified;
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public ActionResult CreateDueDate(int ItemId, DateTime DueDate)
+    {
+      Item item = _db.Items.FirstOrDefault(i => i.ItemId == ItemId);
+      item.DueDate = DueDate;
       _db.Entry(item).State = EntityState.Modified;
       _db.SaveChanges();
       return RedirectToAction("Index");

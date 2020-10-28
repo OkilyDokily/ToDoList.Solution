@@ -7,9 +7,9 @@ namespace ToDoList.Models
   {
     public int ItemId { get; set; }
     public string Description { get; set; }
-    public bool Completed {get;set;} = false;
+    public bool Completed { get; set; } = false;
     public virtual ICollection<CategoryItem> Categories { get; }
-    public DateTime DueDate {get;set;}
+    public DateTime DueDate { get; set; }
 
     public Item()
     {

@@ -12,9 +12,18 @@
 {
   @Html.HiddenFor(m => m.ItemId)
   @Html.LabelFor(m => m.Completed)
-  @Html.CheckBoxFor(m => m.Completed)
+  @Html.EditorFor(m => m.Completed)
   <input type="submit" value="Change completion status" />
 }
+
+@using (Html.BeginForm("CreateDueDate", "Items"))
+{
+  @Html.HiddenFor(m => m.ItemId)
+  @Html.Label("Due Date")
+  @Html.EditorFor(model => model.DueDate)
+  <input type="submit" value="Change due date" />
+}
+
 
 @if (@Model.Categories.Count == 0)
 {
@@ -22,20 +31,10 @@
 }
 else
 {
-  <h4>Categories the item belongs to:</h4>
   <ul>
-    @foreach (var join in Model.Categories)
-    {
-      <li>@join.Category.Name</li>
-    }
-  </ul>
-}
-
-
-
-<ul>
   @foreach (var join in Model.Categories)
   {
+    <h4>Categories the item belongs to:</h4>
     <li>@join.Category.Name</li>
     @using (Html.BeginForm("DeleteCategory", "Items"))
     {
@@ -44,6 +43,8 @@ else
     }
   }
 </ul>
+}
+
 
 <p>@Html.ActionLink("Back to list", "Index")</p>
 <p>@Html.ActionLink("Edit Item", "Edit", new { id = Model.ItemId })</p>
